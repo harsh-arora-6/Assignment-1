@@ -1,4 +1,5 @@
-import mydata from "./data.json" assert {type: "json"};
+//javascript code
+import mydata from "./data.json" assert { type: "json" };
 
 const main = document.querySelector("main");
 
