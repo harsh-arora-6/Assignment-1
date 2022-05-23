@@ -1,0 +1,23 @@
+.divImg {
+  width: 30px;
+  height: 30px;
+}
+
+.actImg {
+  width: 500px;
+  height: 500px;
+}
+.box {
+  width: 300px;
+  height: 70px;
+}
+main {
+  display: flex;
+}
+.outerDiv {
+  display: flex;
+  justify-content: center;
+}
+textarea {
+  width: 500px;
+}
