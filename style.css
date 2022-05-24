@@ -1,23 +1,41 @@
-.divImg {
+.left{
+  display: flexbox;
+  width:300px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.box:focus{
+  background-color: blue;
+  color: white;
+}
+.right{
+  display: flexbox;
+}
+.leftImg {
   width: 30px;
   height: 30px;
 }
 
-.actImg {
+.rightImg {
   width: 500px;
   height: 500px;
+  box-sizing: content-box;
 }
-.box {
-  width: 300px;
-  height: 70px;
+.imgCaption{
+  width: 500px;
+  border:none;
+  text-align: center;
 }
 main {
   display: flex;
-}
-.outerDiv {
-  display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100%;
 }
-textarea {
-  width: 500px;
+html{
+  height: 100%;
 }
+body{
+  height: 100%;
+}
+

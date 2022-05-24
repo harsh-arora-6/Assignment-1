@@ -1,57 +1,57 @@
 //javascript code
+import leftDiv from "./left.js";
+import rightDiv from "./right.js";
 import mydata from "./data.json" assert { type: "json" };
 
-const main = document.querySelector("main");
-
 var ptr = 0;
-const norm = (str) => {
-  if (str.length <= 30) {
-    return str;
-  } else {
-    let newStr = str.slice(0, 14) + "..." + str.slice(-14);
-    return newStr;
+const norm = (label,element) => {
+
+  //fontsize of the innerdiv
+  var style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+var fontSize = parseFloat(style); 
+  //calculating the threshold string length
+  const check = document.createElement("div");
+  check.style.fontSize = fontSize + "px";
+  check.style.whiteSpace = "nowrap";
+  check.style.overflow = "hidden";
+  check.style.width = "270px";
+  document.querySelector("body").append(check);
+  var str = "0";
+  let threshold = 0;
+  for (threshold = 1; ; threshold++) {
+    check.innerText = str;
+    if (check.scrollWidth > check.clientWidth) {
+      break;
+    }
+    str += "0";
   }
+  threshold--;
+  check.remove();
+  if (label.length < threshold) {
+    return label;
+  }
+  var newLabel =
+    label.slice(0, (threshold - 3) / 2) +
+    "..." +
+    label.slice(-(threshold - 3 - (threshold - 3) / 2));
+  return newLabel;
 };
 
-mydata.forEach((item) => {
-  const newDiv = document.createElement("div");
-  newDiv.setAttribute("id", ptr++);
-  newDiv.classList.add("box");
-  // newDiv.classList.add("ellipsis");
-  newDiv.innerHTML = `
-    <img class = "divImg" src = ${item.previewImage}>
-    <span>${norm(item.title)}</span>
-    `;
-  main.querySelector(".container").append(newDiv);
+const sz = mydata.length;
+const List = leftDiv.querySelectorAll(".box");
+List.forEach((item) => {
+  item.querySelector(".labels").innerText = norm(item.querySelector(".labels").innerText,item);
 });
 
-ptr = 0;
-const sz = mydata.length;
-const List = document.querySelectorAll("main .container div");
-List[0].style.backgroundColor = "blue";
-List[0].style.color = "white";
-
-const fig = document.createElement("figure");
-fig.innerHTML = `
-<img class = "actImg" src = ${mydata[0].previewImage} alt = "img"><br>`;
-main.append(fig);
-
-const figname = document.createElement("textarea");
-figname.value = mydata[0].title;
-fig.append(figname);
+List[0].focus();
 
 // modifying for click
 List.forEach((item) => {
   item.addEventListener("click", () => {
-    List.forEach((curitem) => {
-      curitem.style.backgroundColor = "";
-      curitem.style.color = "black";
-    });
-    item.style.backgroundColor = "blue";
-    item.style.color = "white";
-    fig.querySelector("img").src = item.querySelector("img").src;
+    item.focus();
+    rightDiv.querySelector(".rightImg").src = item.querySelector(".leftImg").getAttribute("src");
     ptr = item.id;
-    figname.value = mydata[ptr].title;
+    rightDiv.querySelector(".imgCaption").value = mydata[ptr].title;
   });
 });
 
@@ -62,31 +62,26 @@ document.addEventListener("keydown", (e) => {
     if (ptr < 0) {
       ptr += sz;
     }
-    List.forEach((curitem) => {
-      curitem.style.backgroundColor = "";
-      curitem.style.color = "black";
-    });
-    List[ptr].style.backgroundColor = "blue";
-    List[ptr].style.color = "white";
-    fig.querySelector("img").src = List[ptr].querySelector("img").src;
-    figname.value = mydata[ptr].title;
+    List[ptr].focus();
+    rightDiv.querySelector(".rightImg").src = List[ptr].querySelector(".leftImg").src;
+    rightDiv.querySelector(".imgCaption").value = mydata[ptr].title;
   } else if (e.code === "ArrowDown") {
     ++ptr;
     ptr %= sz;
-    List.forEach((curitem) => {
-      curitem.style.backgroundColor = "";
-      curitem.style.color = "black";
-    });
-    List[ptr].style.backgroundColor = "blue";
-    List[ptr].style.color = "white";
-    fig.querySelector("img").src = List[ptr].querySelector("img").src;
-    figname.value = mydata[ptr].title;
+   
+    List[ptr].focus();
+    rightDiv.querySelector(".rightImg").src = List[ptr].querySelector(".leftImg").src;
+    rightDiv.querySelector(".imgCaption").value = mydata[ptr].title;
   }
 });
 
 // modifying for text change
-figname.addEventListener("input", (e) => {
-  mydata[ptr].title = norm(e.target.value);
-  List[ptr].querySelector("span").innerText = norm(e.target.value);
-  console.log(figname);
+rightDiv.querySelector(".imgCaption").addEventListener("input", (e) => {
+  mydata[ptr].title = e.target.value;
+  List[ptr].querySelector(".labels").innerText = norm(e.target.value,List[ptr]);
 });
+document.addEventListener("mouseenter",()=>{
+  List.forEach((item) => {
+    item.querySelector(".labels").innerText = norm(item.querySelector(".labels").innerText,item);
+  });
+})
