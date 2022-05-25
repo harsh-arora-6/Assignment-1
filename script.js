@@ -8,7 +8,7 @@ const norm = (label,element) => {
 
   //fontsize of the innerdiv
   var style = window.getComputedStyle(element, null).getPropertyValue('font-size');
-var fontSize = parseFloat(style); 
+  var fontSize = parseFloat(style); 
   //calculating the threshold string length
   const check = document.createElement("div");
   check.style.fontSize = fontSize + "px";
@@ -16,14 +16,14 @@ var fontSize = parseFloat(style);
   check.style.overflow = "hidden";
   check.style.width = "270px";
   document.querySelector("body").append(check);
-  var str = "0";
+  var str = "m";
   let threshold = 0;
   for (threshold = 1; ; threshold++) {
     check.innerText = str;
     if (check.scrollWidth > check.clientWidth) {
       break;
     }
-    str += "0";
+    str += "m";
   }
   threshold--;
   check.remove();
